@@ -489,7 +489,12 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-2">
             {/* Blog Card 1 */}
             <div className="border-border cursor-pointer group p-4 border-0 bg-transparent">
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]">
+              <Link
+                href="https://www.figma.com/community/plugin/1585181547477168350"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
+              >
                 <Image
                   src="/images/font-to-mm.png"
                   alt="Blog post thumbnail"
@@ -497,7 +502,7 @@ export default function Home() {
                   height={400}
                   className="blog-image h-full w-full object-cover"
                 />
-              </div>
+              </Link>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-0">
                   <h3 className="text-base leading-7 font-normal text-foreground"> Measure text </h3>
@@ -518,7 +523,12 @@ export default function Home() {
 
             {/* Blog Card 2 */}
             <div className="border-border cursor-pointer group p-4 border-0 bg-transparent">
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]">
+              <Link
+                href="https://medium.com/@ysa_32921/figma-to-google-slides-with-gpt-86e93de57f82"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
+              >
                 <Image
                   src="/images/figma-to-google-slide.png"
                   alt="Blog post thumbnail"
@@ -526,7 +536,7 @@ export default function Home() {
                   height={400}
                   className="blog-image h-full w-full object-cover"
                 />
-              </div>
+              </Link>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-0">
                   <h3 className="text-base leading-7 font-normal text-foreground">Figma to Google Slide</h3>
@@ -547,7 +557,10 @@ export default function Home() {
 
             {/* Blog Card 3 */}
             <div className="border-border cursor-pointer group p-4 border-0 bg-transparent">
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]">
+              <Link
+                href="#"
+                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
+              >
                 <Image
                   src="/images/design-system-template.png"
                   alt="Blog post thumbnail"
@@ -555,7 +568,7 @@ export default function Home() {
                   height={400}
                   className="blog-image h-full w-full object-cover"
                 />
-              </div>
+              </Link>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-0">
                   <h3 className="text-base leading-7 font-normal text-foreground">Type and Translate!</h3>

@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react"
 import { Header } from "@/components/header"
 import { projects, getProjectBySlug } from "@/lib/projects"
 
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 export function generateStaticParams() {
   return projects.map((project) => ({
     slug: project.slug,
@@ -130,7 +132,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
         <section className="py-10 px-6">
           <div className="w-full overflow-hidden">
             <Image
-              src={project.heroImage || "/placeholder.svg"}
+              src={project.heroImage ? `${base}${project.heroImage}` : `${base}/placeholder.svg`}
               alt={`${project.title} hero image`}
               width={1600}
               height={1200}
@@ -169,7 +171,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
         <section className="py-10 px-6">
           <div className="w-full overflow-hidden rounded-[16px]">
             <Image
-              src={project.mainImage1 || "/placeholder.svg"}
+              src={project.mainImage1 ? `${base}${project.mainImage1}` : `${base}/placeholder.svg`}
               alt={`${project.title} main image 1`}
               width={1600}
               height={1200}
@@ -183,7 +185,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
           <section className="py-10 px-6">
             <div className="w-full overflow-hidden rounded-[16px]">
               <Image
-                src={project.mainImage2 || "/placeholder.svg"}
+                src={project.mainImage2 ? `${base}${project.mainImage2}` : `${base}/placeholder.svg`}
                 alt={`${project.title} main image 2`}
                 width={1600}
                 height={1200}
@@ -199,7 +201,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
             <div className="grid grid-cols-3 gap-4">
               <div className="w-full overflow-hidden rounded-[10px]">
                 <Image
-                  src="/images/energino-m2.jpeg"
+                  src={`${base}/images/energino-m2.jpeg`}
                   alt="Enerbuild image 1"
                   width={600}
                   height={600}
@@ -208,7 +210,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
               </div>
               <div className="w-full overflow-hidden rounded-[10px]">
                 <Image
-                  src="/images/energino-m1.png"
+                  src={`${base}/images/energino-m1.png`}
                   alt="Enerbuild image 2"
                   width={600}
                   height={600}
@@ -217,7 +219,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
               </div>
               <div className="w-full overflow-hidden rounded-[10px]">
                 <Image
-                  src="/images/energino-m3.jpeg"
+                  src={`${base}/images/energino-m3.jpeg`}
                   alt="Enerbuild image 3"
                   width={600}
                   height={600}

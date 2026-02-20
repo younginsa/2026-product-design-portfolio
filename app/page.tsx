@@ -7,6 +7,8 @@ import { useEffect, useState, useRef } from "react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useTheme } from "next-themes"
 
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isInTextArea, setIsInTextArea] = useState(false)
@@ -216,7 +218,7 @@ export default function Home() {
                   aria-label="Play video"
                 >
                   <Image
-                    src="/images/thumbnail.png"
+                    src={`${base}/images/thumbnail.png`}
                     alt="Video thumbnail"
                     fill
                     className="object-cover"
@@ -257,7 +259,7 @@ export default function Home() {
               <div className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted">
                 {cyberSecurityVideoError && (
                   <Image
-                    src="/images/fleet-cyber-security.jpg"
+                    src={`${base}/images/fleet-cyber-security.jpg`}
                     alt="Ship Cyber security project thumbnail"
                     width={600}
                     height={400}
@@ -267,7 +269,7 @@ export default function Home() {
                 {!cyberSecurityVideoError && (
                   <video
                     ref={cyberSecurityVideoRef}
-                    src="/videos/cybersecurity.mp4"
+                    src={`${base}/videos/cybersecurity.mp4`}
                     preload="auto"
                     className="absolute inset-0 h-full w-full object-cover"
                     muted
@@ -301,7 +303,7 @@ export default function Home() {
               <div className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted">
                 {neuboatVideoError && (
                   <Image
-                    src="/images/secure-network-management.jpg"
+                    src={`${base}/images/secure-network-management.jpg`}
                     alt="Neuboat project thumbnail"
                     width={600}
                     height={400}
@@ -311,7 +313,7 @@ export default function Home() {
                 {!neuboatVideoError && (
                   <video
                     ref={neuboatVideoRef}
-                    src="/videos/neuboat.mp4?v=2"
+                    src={`${base}/videos/neuboat.mp4?v=2`}
                     preload="auto"
                     className="absolute inset-0 h-full w-full object-cover"
                     muted
@@ -345,7 +347,7 @@ export default function Home() {
               <div className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted">
                 {hinasCloudVideoError && (
                   <Image
-                    src="/images/secure-network-management-project.jpg"
+                    src={`${base}/images/secure-network-management-project.jpg`}
                     alt="HiNAS Cloud project thumbnail"
                     width={600}
                     height={400}
@@ -355,7 +357,7 @@ export default function Home() {
                 {!hinasCloudVideoError && (
                   <video
                     ref={hinasCloudVideoRef}
-                    src="/videos/cloud.mp4"
+                    src={`${base}/videos/cloud.mp4`}
                     preload="auto"
                     className="absolute inset-0 h-full w-full object-cover"
                     muted
@@ -386,7 +388,7 @@ export default function Home() {
             >
               <div className="aspect-[4/3] w-full overflow-hidden mb-6">
                 <Image
-                  src="/images/project-five.png"
+                  src={`${base}/images/project-five.png`}
                   alt="Project thumbnail"
                   width={600}
                   height={400}
@@ -408,7 +410,7 @@ export default function Home() {
             <Link href="/project/geared-ai" className="project-card border-border cursor-pointer p-4 border-0 block">
               <div className="aspect-[4/3] w-full overflow-hidden mb-6">
                 <Image
-                  src="/images/geared-ai.png"
+                  src={`${base}/images/geared-ai.png`}
                   alt="Project thumbnail"
                   width={600}
                   height={400}
@@ -436,7 +438,7 @@ export default function Home() {
               <div className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted">
                 {enerbuildVideoError && (
                   <Image
-                    src="/images/project-six.png"
+                    src={`${base}/images/project-six.png`}
                     alt="Enerbuild project thumbnail"
                     width={600}
                     height={400}
@@ -446,7 +448,7 @@ export default function Home() {
                 {!enerbuildVideoError && (
                   <video
                     ref={enerbuildVideoRef}
-                    src="/videos/enerbuild.mp4"
+                    src={`${base}/videos/enerbuild.mp4`}
                     preload="auto"
                     className="absolute inset-0 h-full w-full object-cover"
                     muted
@@ -496,7 +498,7 @@ export default function Home() {
                 className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
               >
                 <Image
-                  src="/images/font-to-mm.png"
+                  src={`${base}/images/font-to-mm.png`}
                   alt="Blog post thumbnail"
                   width={600}
                   height={400}
@@ -530,7 +532,7 @@ export default function Home() {
                 className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
               >
                 <Image
-                  src="/images/figma-to-google-slide.png"
+                  src={`${base}/images/figma-to-google-slide.png`}
                   alt="Blog post thumbnail"
                   width={600}
                   height={400}
@@ -562,7 +564,7 @@ export default function Home() {
                 className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
               >
                 <Image
-                  src="/images/design-system-template.png"
+                  src={`${base}/images/design-system-template.png`}
                   alt="Blog post thumbnail"
                   width={600}
                   height={400}

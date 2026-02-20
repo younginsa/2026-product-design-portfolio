@@ -1,0 +1,398 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Design System Variables */
+:root {
+  /* Brand Colors - Light Mode */
+  --color-brand-primary: 60 62 71;
+  --color-brand-secondary: 93 98 117;
+  --color-brand-accent: 133 137 152;
+
+  /* Typography - Manrope */
+  --font-family-primary: var(--font-manrope), "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+
+  /* Border Radius */
+  --border-radius-none: 0;
+  --border-radius-sm: 0.125rem;
+  --border-radius-md: 0.375rem;
+  --border-radius-lg: 0.5rem;
+  --border-radius-xl: 0.75rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* Semantic Colors - Light Mode (oklch without wrapper) */
+  --background: 0.985 0 0;
+  --foreground: 0.145 0 0;
+  --card: 1 0 0;
+  --card-foreground: 0.145 0 0;
+  --popover: 1 0 0;
+  --popover-foreground: 0.145 0 0;
+  --primary: 0.205 0 0;
+  --primary-foreground: 0.985 0 0;
+  --secondary: 0.97 0 0;
+  --secondary-foreground: 0.205 0 0;
+  --muted: 0.966 0.006 264.53;
+  --muted-foreground: 0.556 0 0;
+  --accent: 0.966 0.006 264.53;
+  --accent-foreground: 0.205 0 0;
+  --destructive: 0.577 0.245 27.325;
+  --destructive-foreground: 0.577 0.245 27.325;
+  --border: 0.922 0 0;
+  --input: 0.632 0.023 273.85;
+  --ring: 0.708 0 0;
+  --chart-1: 0.646 0.222 41.116;
+  --chart-2: 0.6 0.118 184.704;
+  --chart-3: 0.398 0.07 227.392;
+  --chart-4: 0.828 0.189 84.429;
+  --chart-5: 0.769 0.188 70.08;
+  --radius: 0.625rem;
+  --sidebar: 0.985 0 0;
+  --sidebar-foreground: 0.145 0 0;
+  --sidebar-primary: 0.205 0 0;
+  --sidebar-primary-foreground: 0.985 0 0;
+  --sidebar-accent: 0.97 0 0;
+  --sidebar-accent-foreground: 0.205 0 0;
+  --sidebar-border: 0.922 0 0;
+  --sidebar-ring: 0.708 0 0;
+}
+
+.dark {
+  /* Brand Colors - Dark Mode - EDIT THESE FOR CUSTOM COLORS */
+  --color-brand-primary: 229 231 235;
+  --color-brand-secondary: 209 213 219;
+  --color-brand-accent: 156 163 175;
+
+  /* Semantic Colors - Dark Mode - EDIT THESE FOR CUSTOM COLORS */
+  --background: 0.15 0.008 274.5;
+  --foreground: 0.985 0 0;
+  --card: 0.25 0.008 274.5;
+  --card-foreground: 0.985 0 0;
+  --popover: 0.145 0 0;
+  --popover-foreground: 0.985 0 0;
+  --primary: 0.985 0 0;
+  --primary-foreground: 0.205 0 0;
+  --secondary: 0.269 0 0;
+  --secondary-foreground: 0.864 0.01 273.34;
+  --muted: 0.318 0.017 270.85;
+  --muted-foreground: 0.708 0 0;
+  --accent: 0.318 0.017 270.85;
+  --accent-foreground: 0.985 0 0;
+  --destructive: 0.396 0.141 25.723;
+  --destructive-foreground: 0.637 0.237 25.331;
+  --border: 0.269 0 0;
+  --input: 0.632 0.023 273.85;
+  --ring: 0.439 0 0;
+  --chart-1: 0.488 0.243 264.376;
+  --chart-2: 0.696 0.17 162.48;
+  --chart-3: 0.769 0.188 70.08;
+  --chart-4: 0.627 0.265 303.9;
+  --chart-5: 0.645 0.246 16.439;
+  --sidebar: 0.205 0 0;
+  --sidebar-foreground: 0.985 0 0;
+  --sidebar-primary: 0.488 0.243 264.376;
+  --sidebar-primary-foreground: 0.985 0 0;
+  --sidebar-accent: 0.269 0 0;
+  --sidebar-accent-foreground: 0.985 0 0;
+  --sidebar-border: 0.269 0 0;
+  --sidebar-ring: 0.439 0 0;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Surface Colors */
+  .bg-surface {
+    background-color: oklch(var(--background));
+  }
+
+  .bg-surface-secondary {
+    background-color: oklch(var(--secondary));
+  }
+
+  .bg-surface-tertiary {
+    background-color: oklch(var(--muted));
+  }
+
+  /* Text Colors */
+  .text-text-primary {
+    color: oklch(var(--foreground));
+  }
+
+  .text-text-secondary {
+    color: oklch(var(--muted-foreground));
+  }
+
+  .text-brand-primary {
+    color: rgb(var(--color-brand-primary));
+  }
+
+  .text-brand-secondary {
+    color: rgb(var(--color-brand-secondary));
+  }
+
+  .text-brand-accent {
+    color: rgb(var(--color-brand-accent));
+  }
+
+  /* Border Colors */
+  .border-border-primary {
+    border-color: oklch(var(--border));
+  }
+
+  .border-border-hover {
+    border-color: oklch(var(--muted));
+  }
+}
+
+/* Custom underline animation for navigation links */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.nav-link:not(:hover)::after {
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Project Card Hover Animations */
+.project-card {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(0) scale(1);
+  box-shadow: none;
+  border-radius: 0;
+  background-color: transparent;
+  will-change: transform, box-shadow, border-radius, background-color;
+}
+
+.project-card:hover {
+  transform: translateY(-4px) scale(1);
+  box-shadow: 0 25px 50px -12px rgba(107, 114, 128, 0.2);
+  border-radius: 0.75rem;
+  background-color: oklch(var(--card));
+}
+
+.dark .project-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  background-color: oklch(var(--card));
+}
+
+/* Blog Image Hover Animations */
+.blog-image {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+}
+
+/* Button Hover Animations */
+.resume-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+}
+
+.resume-button:hover {
+  background-color: oklch(var(--accent));
+  color: oklch(var(--accent-foreground));
+}
+
+/* Theme Toggle Hover Styles */
+.theme-toggle:hover {
+  background-color: oklch(var(--accent));
+  color: oklch(var(--accent-foreground));
+}
+
+.dark .resume-button:hover {
+  background-color: oklch(var(--accent));
+  color: oklch(var(--accent-foreground));
+}
+
+/* Footer Link Hover Animations */
+.footer-link {
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-link:hover {
+  color: rgb(75 85 99);
+}
+
+.dark .footer-link:hover {
+  color: rgb(209 213 219);
+}
+
+/* Added summary card dark mode background */
+.summary-card {
+  background-color: #fdfdff;
+  box-shadow: 0 4px 60px -15px rgba(0, 0, 0, 0.08);
+}
+
+.dark .summary-card {
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 60px -15px rgba(0, 0, 0, 0.3);
+}
+
+/* Global selection styling */
+::selection {
+  background: rgb(var(--color-brand-primary));
+  color: oklch(var(--background));
+}
+
+.dark ::selection {
+  background: rgb(var(--color-brand-accent));
+  color: oklch(var(--background));
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Animated word rotation */
+/* Fixed animation to prevent overlapping and ensure only active word is visible */
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  8% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  33% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* Fixed width issue - container uses inline width, words properly hidden when not active */
+.animated-word-container {
+  display: inline-block;
+  position: relative;
+  height: 1.2em;
+  vertical-align: bottom;
+  overflow: hidden;
+  padding: 0 4px;
+  margin: 0 2px;
+}
+
+.animated-word {
+  position: absolute;
+  left: 4px;
+  top: 0;
+  white-space: nowrap;
+  opacity: 0;
+  animation: slideUp 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animated-word:nth-child(2) {
+  animation-delay: 0s;
+}
+
+.animated-word:nth-child(3) {
+  animation-delay: 4s;
+}
+
+.animated-word:nth-child(4) {
+  animation-delay: 8s;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@theme inline {
+  /* Tailwind font-sans - Manrope */
+  --font-sans: var(--font-manrope), "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --color-background: oklch(var(--background));
+  --color-foreground: oklch(var(--foreground));
+  --color-card: oklch(var(--card));
+  --color-card-foreground: oklch(var(--card-foreground));
+  --color-popover: oklch(var(--popover));
+  --color-popover-foreground: oklch(var(--popover-foreground));
+  --color-primary: oklch(var(--primary));
+  --color-primary-foreground: oklch(var(--primary-foreground));
+  --color-secondary: oklch(var(--secondary));
+  --color-secondary-foreground: oklch(var(--secondary-foreground));
+  --color-muted: oklch(var(--muted));
+  --color-muted-foreground: oklch(var(--muted-foreground));
+  --color-accent: oklch(var(--accent));
+  --color-accent-foreground: oklch(var(--accent-foreground));
+  --color-destructive: oklch(var(--destructive));
+  --color-destructive-foreground: oklch(var(--destructive-foreground));
+  --color-border: oklch(var(--border));
+  --color-input: oklch(var(--input));
+  --color-ring: oklch(var(--ring));
+  --color-chart-1: oklch(var(--chart-1));
+  --color-chart-2: oklch(var(--chart-2));
+  --color-chart-3: oklch(var(--chart-3));
+  --color-chart-4: oklch(var(--chart-4));
+  --color-chart-5: oklch(var(--chart-5));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: oklch(var(--sidebar));
+  --color-sidebar-foreground: oklch(var(--sidebar-foreground));
+  --color-sidebar-primary: oklch(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: oklch(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: oklch(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: oklch(var(--sidebar-accent-foreground));
+  --color-sidebar-border: oklch(var(--sidebar-border));
+  --color-sidebar-ring: oklch(var(--sidebar-ring));
+}

@@ -1,12 +1,11 @@
 /** @type {import('next').NextConfig} */
-const basePath = "/2026-product-design-portfolio"
+// Use basePath only for GitHub Pages default URL (username.github.io/repo-name).
+// Set to "" when using a custom domain (site served at root).
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 const nextConfig = {
   output: "export",
-  basePath,
-  assetPrefix: `${basePath}/`,
-  env: {
-    NEXT_PUBLIC_BASE_PATH: process.env.NODE_ENV === "production" ? basePath : "",
-  },
+  ...(basePath && { basePath }),
+  ...(basePath && { assetPrefix: `${basePath}/` }),
   typescript: {
     ignoreBuildErrors: true,
   },

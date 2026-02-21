@@ -16,16 +16,21 @@ export default function Home() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const heroVideoRef = useRef<HTMLVideoElement>(null)
   const [isNeuboatHovered, setIsNeuboatHovered] = useState(false)
   const [neuboatVideoError, setNeuboatVideoError] = useState(false)
   const neuboatVideoRef = useRef<HTMLVideoElement>(null)
   const [isCyberSecurityHovered, setIsCyberSecurityHovered] = useState(false)
+  const [cyberSecurityTapped, setCyberSecurityTapped] = useState(false)
   const [cyberSecurityVideoError, setCyberSecurityVideoError] = useState(false)
   const cyberSecurityVideoRef = useRef<HTMLVideoElement>(null)
+  const [isNeuboatTapped, setIsNeuboatTapped] = useState(false)
   const [isHinasCloudHovered, setIsHinasCloudHovered] = useState(false)
+  const [hinasCloudTapped, setHinasCloudTapped] = useState(false)
   const [hinasCloudVideoError, setHinasCloudVideoError] = useState(false)
   const hinasCloudVideoRef = useRef<HTMLVideoElement>(null)
   const [isEnerbuildHovered, setIsEnerbuildHovered] = useState(false)
+  const [enerbuildTapped, setEnerbuildTapped] = useState(false)
   const [enerbuildVideoError, setEnerbuildVideoError] = useState(false)
   const enerbuildVideoRef = useRef<HTMLVideoElement>(null)
 
@@ -63,49 +68,49 @@ export default function Home() {
     }
   }, [])
 
-  // Neuboat card: play video on hover, pause on leave (skip if video failed to load)
+  // Neuboat card: play on hover (desktop) or tap (mobile), pause when neither
   useEffect(() => {
     const video = neuboatVideoRef.current
     if (!video || neuboatVideoError) return
-    if (isNeuboatHovered) video.play().catch(() => {})
+    if (isNeuboatHovered || isNeuboatTapped) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isNeuboatHovered, neuboatVideoError])
+  }, [isNeuboatHovered, isNeuboatTapped, neuboatVideoError])
 
-  // Ship Cyber security card: play video on hover, pause on leave
+  // Ship Cyber security card: play on hover or tap
   useEffect(() => {
     const video = cyberSecurityVideoRef.current
     if (!video || cyberSecurityVideoError) return
-    if (isCyberSecurityHovered) video.play().catch(() => {})
+    if (isCyberSecurityHovered || cyberSecurityTapped) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isCyberSecurityHovered, cyberSecurityVideoError])
+  }, [isCyberSecurityHovered, cyberSecurityTapped, cyberSecurityVideoError])
 
-  // HiNAS Cloud card: play video on hover, pause on leave
+  // HiNAS Cloud card: play on hover or tap
   useEffect(() => {
     const video = hinasCloudVideoRef.current
     if (!video || hinasCloudVideoError) return
-    if (isHinasCloudHovered) video.play().catch(() => {})
+    if (isHinasCloudHovered || hinasCloudTapped) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isHinasCloudHovered, hinasCloudVideoError])
+  }, [isHinasCloudHovered, hinasCloudTapped, hinasCloudVideoError])
 
-  // Enerbuild card: play video on hover, pause on leave
+  // Enerbuild card: play on hover or tap
   useEffect(() => {
     const video = enerbuildVideoRef.current
     if (!video || enerbuildVideoError) return
-    if (isEnerbuildHovered) video.play().catch(() => {})
+    if (isEnerbuildHovered || enerbuildTapped) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isEnerbuildHovered, enerbuildVideoError])
+  }, [isEnerbuildHovered, enerbuildTapped, enerbuildVideoError])
 
   // Cycle through words and update width
   useEffect(() => {
@@ -208,37 +213,35 @@ export default function Home() {
               )}
             </div>
 
-            {/* YouTube Shorts - custom thumbnail cover, right column (portrait 9:16, height fits hero) */}
-            <div className="w-full h-[400px] md:h-[400px] md:w-auto md:flex-none aspect-[9/16] rounded-lg overflow-hidden relative bg-muted md:mr-6">
-              {!isVideoPlaying ? (
+            {/* Hero video - fixed 1080×1920 (9:16) ratio; container keeps ratio so no top/bottom crop */}
+            <div className="w-full aspect-[9/16] md:max-h-[400px] md:w-[225px] md:flex-none rounded-lg overflow-hidden relative bg-muted md:mr-6">
+              <video
+                ref={heroVideoRef}
+                src={`${base}/videos/intro.mp4`}
+                poster={`${base}/images/thumbnail.png`}
+                className="absolute inset-0 w-full h-full object-cover"
+                playsInline
+                controls
+                aria-label="Intro video"
+                onPlay={() => setIsVideoPlaying(true)}
+                onEnded={() => setIsVideoPlaying(false)}
+              />
+              {!isVideoPlaying && (
                 <button
                   type="button"
-                  onClick={() => setIsVideoPlaying(true)}
+                  onClick={() => {
+                    heroVideoRef.current?.play()
+                    setIsVideoPlaying(true)
+                  }}
                   className="absolute inset-0 w-full h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
                   aria-label="Play video"
                 >
-                  <Image
-                    src={`${base}/images/thumbnail.png`}
-                    alt="Video thumbnail"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 384px"
-                  />
-                  <span className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors">
+                  <span className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors pointer-events-none">
                     <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
                       <Play className="h-7 w-7 ml-1 fill-current" />
                     </span>
                   </span>
                 </button>
-              ) : (
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/ipM5tsH_13o?autoplay=1&modestbranding=1"
-                  title="YouTube video player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
               )}
             </div>
           </div>
@@ -254,10 +257,22 @@ export default function Home() {
               rel="noopener noreferrer"
               className="project-card border-border cursor-pointer p-4 border-0 block"
               onMouseEnter={() => setIsCyberSecurityHovered(true)}
-              onMouseLeave={() => setIsCyberSecurityHovered(false)}
+              onMouseLeave={() => {
+                setIsCyberSecurityHovered(false)
+                setCyberSecurityTapped(false)
+              }}
             >
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted">
-                {cyberSecurityVideoError && (
+              <div
+                className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
+                onClick={(e) => {
+                  if (!isCyberSecurityHovered && !cyberSecurityTapped && !cyberSecurityVideoError) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setCyberSecurityTapped(true)
+                  }
+                }}
+              >
+                {(cyberSecurityVideoError || (!isCyberSecurityHovered && !cyberSecurityTapped)) && (
                   <Image
                     src={`${base}/images/fleet-cyber-security.jpg`}
                     alt="Ship Cyber security project thumbnail"
@@ -266,7 +281,7 @@ export default function Home() {
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 )}
-                {!cyberSecurityVideoError && (
+                {!cyberSecurityVideoError && (isCyberSecurityHovered || cyberSecurityTapped) && (
                   <video
                     ref={cyberSecurityVideoRef}
                     src={`${base}/videos/cybersecurity.mp4`}
@@ -298,10 +313,22 @@ export default function Home() {
               rel="noopener noreferrer"
               className="project-card border-border cursor-pointer p-4 border-0 block"
               onMouseEnter={() => setIsNeuboatHovered(true)}
-              onMouseLeave={() => setIsNeuboatHovered(false)}
+              onMouseLeave={() => {
+                setIsNeuboatHovered(false)
+                setIsNeuboatTapped(false)
+              }}
             >
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted">
-                {neuboatVideoError && (
+              <div
+                className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
+                onClick={(e) => {
+                  if (!isNeuboatHovered && !isNeuboatTapped && !neuboatVideoError) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setIsNeuboatTapped(true)
+                  }
+                }}
+              >
+                {(neuboatVideoError || (!isNeuboatHovered && !isNeuboatTapped)) && (
                   <Image
                     src={`${base}/images/secure-network-management.jpg`}
                     alt="Neuboat project thumbnail"
@@ -310,7 +337,7 @@ export default function Home() {
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 )}
-                {!neuboatVideoError && (
+                {!neuboatVideoError && (isNeuboatHovered || isNeuboatTapped) && (
                   <video
                     ref={neuboatVideoRef}
                     src={`${base}/videos/neuboat.mp4?v=2`}
@@ -342,10 +369,22 @@ export default function Home() {
               rel="noopener noreferrer"
               className="project-card border-border cursor-pointer p-4 border-0 block"
               onMouseEnter={() => setIsHinasCloudHovered(true)}
-              onMouseLeave={() => setIsHinasCloudHovered(false)}
+              onMouseLeave={() => {
+                setIsHinasCloudHovered(false)
+                setHinasCloudTapped(false)
+              }}
             >
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted">
-                {hinasCloudVideoError && (
+              <div
+                className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
+                onClick={(e) => {
+                  if (!isHinasCloudHovered && !hinasCloudTapped && !hinasCloudVideoError) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setHinasCloudTapped(true)
+                  }
+                }}
+              >
+                {(hinasCloudVideoError || (!isHinasCloudHovered && !hinasCloudTapped)) && (
                   <Image
                     src={`${base}/images/secure-network-management-project.jpg`}
                     alt="HiNAS Cloud project thumbnail"
@@ -354,7 +393,7 @@ export default function Home() {
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 )}
-                {!hinasCloudVideoError && (
+                {!hinasCloudVideoError && (isHinasCloudHovered || hinasCloudTapped) && (
                   <video
                     ref={hinasCloudVideoRef}
                     src={`${base}/videos/cloud.mp4`}
@@ -433,10 +472,22 @@ export default function Home() {
               href="/project/energino"
               className="project-card border-border cursor-pointer p-4 border-0 block"
               onMouseEnter={() => setIsEnerbuildHovered(true)}
-              onMouseLeave={() => setIsEnerbuildHovered(false)}
+              onMouseLeave={() => {
+                setIsEnerbuildHovered(false)
+                setEnerbuildTapped(false)
+              }}
             >
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted">
-                {enerbuildVideoError && (
+              <div
+                className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
+                onClick={(e) => {
+                  if (!isEnerbuildHovered && !enerbuildTapped && !enerbuildVideoError) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setEnerbuildTapped(true)
+                  }
+                }}
+              >
+                {(enerbuildVideoError || (!isEnerbuildHovered && !enerbuildTapped)) && (
                   <Image
                     src={`${base}/images/project-six.png`}
                     alt="Enerbuild project thumbnail"
@@ -445,7 +496,7 @@ export default function Home() {
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 )}
-                {!enerbuildVideoError && (
+                {!enerbuildVideoError && (isEnerbuildHovered || enerbuildTapped) && (
                   <video
                     ref={enerbuildVideoRef}
                     src={`${base}/videos/enerbuild.mp4`}

@@ -117,7 +117,7 @@ export default function Home() {
     }
   }, [isEnerbuildHovered, enerbuildTapped, enerbuildVideoReady, enerbuildVideoError])
 
-  // Pause all project videos and reset tapped state (mobile: only one plays, stop on focus out)
+  // Pause all and reset (for tap-outside)
   const pauseAllProjectVideos = useCallback(() => {
     ;[
       cyberSecurityVideoRef,
@@ -137,12 +137,50 @@ export default function Home() {
     setEnerbuildTapped(false)
   }, [])
 
-  // Document listener: when user taps outside project cards, pause all (mobile)
+  // Switch to this card: pause others, then play this one (mobile - only one plays at a time)
+  const switchToCard = useCallback(
+    (card: "cyber" | "neuboat" | "hinas" | "enerbuild") => {
+      // Pause others first (don't reset state yet - avoid race with play)
+      ;[
+        [cyberSecurityVideoRef, "cyber"],
+        [neuboatVideoRef, "neuboat"],
+        [hinasCloudVideoRef, "hinas"],
+        [enerbuildVideoRef, "enerbuild"],
+      ].forEach(([ref, id]) => {
+        if (id !== card) {
+          const v = (ref as React.RefObject<HTMLVideoElement>).current
+          if (v) {
+            v.pause()
+            v.currentTime = 0
+          }
+        }
+      })
+      setCyberSecurityTapped(card === "cyber")
+      setIsNeuboatTapped(card === "neuboat")
+      setHinasCloudTapped(card === "hinas")
+      setEnerbuildTapped(card === "enerbuild")
+      const ref =
+        card === "cyber"
+          ? cyberSecurityVideoRef
+          : card === "neuboat"
+            ? neuboatVideoRef
+            : card === "hinas"
+              ? hinasCloudVideoRef
+              : enerbuildVideoRef
+      const video = ref.current
+      if (video) {
+        video.currentTime = 0
+        video.play().catch(() => {})
+      }
+    },
+    []
+  )
+
+  // When tapping outside project cards, pause all (mobile)
   useEffect(() => {
     const handleOutsideTap = (e: TouchEvent | MouseEvent) => {
-      const target = e.target as Node
-      // Don't pause if tap was on a project card (card handler will manage)
-      if (document.getElementById("project")?.contains(target)) return
+      const target = e.target as HTMLElement
+      if (target.closest(".project-card")) return
       pauseAllProjectVideos()
     }
     document.addEventListener("touchend", handleOutsideTap, { passive: true })
@@ -310,17 +348,13 @@ export default function Home() {
                   if (!cyberSecurityVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
-                    pauseAllProjectVideos()
-                    setCyberSecurityTapped(true)
-                    cyberSecurityVideoRef.current?.play().catch(() => {})
+                    switchToCard("cyber")
                   }
                 }}
                 onTouchEnd={(e) => {
                   if (!cyberSecurityVideoError) {
                     e.preventDefault()
-                    pauseAllProjectVideos()
-                    setCyberSecurityTapped(true)
-                    cyberSecurityVideoRef.current?.play().catch(() => {})
+                    switchToCard("cyber")
                   }
                 }}
               >
@@ -377,17 +411,13 @@ export default function Home() {
                   if (!neuboatVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
-                    pauseAllProjectVideos()
-                    setIsNeuboatTapped(true)
-                    neuboatVideoRef.current?.play().catch(() => {})
+                    switchToCard("neuboat")
                   }
                 }}
                 onTouchEnd={(e) => {
                   if (!neuboatVideoError) {
                     e.preventDefault()
-                    pauseAllProjectVideos()
-                    setIsNeuboatTapped(true)
-                    neuboatVideoRef.current?.play().catch(() => {})
+                    switchToCard("neuboat")
                   }
                 }}
               >
@@ -444,17 +474,13 @@ export default function Home() {
                   if (!hinasCloudVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
-                    pauseAllProjectVideos()
-                    setHinasCloudTapped(true)
-                    hinasCloudVideoRef.current?.play().catch(() => {})
+                    switchToCard("hinas")
                   }
                 }}
                 onTouchEnd={(e) => {
                   if (!hinasCloudVideoError) {
                     e.preventDefault()
-                    pauseAllProjectVideos()
-                    setHinasCloudTapped(true)
-                    hinasCloudVideoRef.current?.play().catch(() => {})
+                    switchToCard("hinas")
                   }
                 }}
               >
@@ -558,17 +584,13 @@ export default function Home() {
                   if (!enerbuildVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
-                    pauseAllProjectVideos()
-                    setEnerbuildTapped(true)
-                    enerbuildVideoRef.current?.play().catch(() => {})
+                    switchToCard("enerbuild")
                   }
                 }}
                 onTouchEnd={(e) => {
                   if (!enerbuildVideoError) {
                     e.preventDefault()
-                    pauseAllProjectVideos()
-                    setEnerbuildTapped(true)
-                    enerbuildVideoRef.current?.play().catch(() => {})
+                    switchToCard("enerbuild")
                   }
                 }}
               >

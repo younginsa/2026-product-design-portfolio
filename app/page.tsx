@@ -22,15 +22,19 @@ export default function Home() {
   const neuboatVideoRef = useRef<HTMLVideoElement>(null)
   const [isCyberSecurityHovered, setIsCyberSecurityHovered] = useState(false)
   const [cyberSecurityTapped, setCyberSecurityTapped] = useState(false)
+  const [cyberSecurityVideoReady, setCyberSecurityVideoReady] = useState(false)
   const [cyberSecurityVideoError, setCyberSecurityVideoError] = useState(false)
   const cyberSecurityVideoRef = useRef<HTMLVideoElement>(null)
   const [isNeuboatTapped, setIsNeuboatTapped] = useState(false)
+  const [neuboatVideoReady, setNeuboatVideoReady] = useState(false)
   const [isHinasCloudHovered, setIsHinasCloudHovered] = useState(false)
   const [hinasCloudTapped, setHinasCloudTapped] = useState(false)
+  const [hinasCloudVideoReady, setHinasCloudVideoReady] = useState(false)
   const [hinasCloudVideoError, setHinasCloudVideoError] = useState(false)
   const hinasCloudVideoRef = useRef<HTMLVideoElement>(null)
   const [isEnerbuildHovered, setIsEnerbuildHovered] = useState(false)
   const [enerbuildTapped, setEnerbuildTapped] = useState(false)
+  const [enerbuildVideoReady, setEnerbuildVideoReady] = useState(false)
   const [enerbuildVideoError, setEnerbuildVideoError] = useState(false)
   const enerbuildVideoRef = useRef<HTMLVideoElement>(null)
 
@@ -68,49 +72,49 @@ export default function Home() {
     }
   }, [])
 
-  // Neuboat card: play on hover (desktop) or tap (mobile), pause when neither
+  // Neuboat card: play only when video is ready (avoids gray flash)
   useEffect(() => {
     const video = neuboatVideoRef.current
     if (!video || neuboatVideoError) return
-    if (isNeuboatHovered || isNeuboatTapped) video.play().catch(() => {})
+    if ((isNeuboatHovered || isNeuboatTapped) && neuboatVideoReady) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isNeuboatHovered, isNeuboatTapped, neuboatVideoError])
+  }, [isNeuboatHovered, isNeuboatTapped, neuboatVideoReady, neuboatVideoError])
 
-  // Ship Cyber security card: play on hover or tap
+  // Ship Cyber security card
   useEffect(() => {
     const video = cyberSecurityVideoRef.current
     if (!video || cyberSecurityVideoError) return
-    if (isCyberSecurityHovered || cyberSecurityTapped) video.play().catch(() => {})
+    if ((isCyberSecurityHovered || cyberSecurityTapped) && cyberSecurityVideoReady) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isCyberSecurityHovered, cyberSecurityTapped, cyberSecurityVideoError])
+  }, [isCyberSecurityHovered, cyberSecurityTapped, cyberSecurityVideoReady, cyberSecurityVideoError])
 
-  // HiNAS Cloud card: play on hover or tap
+  // HiNAS Cloud card
   useEffect(() => {
     const video = hinasCloudVideoRef.current
     if (!video || hinasCloudVideoError) return
-    if (isHinasCloudHovered || hinasCloudTapped) video.play().catch(() => {})
+    if ((isHinasCloudHovered || hinasCloudTapped) && hinasCloudVideoReady) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isHinasCloudHovered, hinasCloudTapped, hinasCloudVideoError])
+  }, [isHinasCloudHovered, hinasCloudTapped, hinasCloudVideoReady, hinasCloudVideoError])
 
-  // Enerbuild card: play on hover or tap
+  // Enerbuild card
   useEffect(() => {
     const video = enerbuildVideoRef.current
     if (!video || enerbuildVideoError) return
-    if (isEnerbuildHovered || enerbuildTapped) video.play().catch(() => {})
+    if ((isEnerbuildHovered || enerbuildTapped) && enerbuildVideoReady) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isEnerbuildHovered, enerbuildTapped, enerbuildVideoError])
+  }, [isEnerbuildHovered, enerbuildTapped, enerbuildVideoReady, enerbuildVideoError])
 
   // Cycle through words and update width
   useEffect(() => {
@@ -272,25 +276,26 @@ export default function Home() {
                   }
                 }}
               >
-                {(cyberSecurityVideoError || (!isCyberSecurityHovered && !cyberSecurityTapped)) && (
+                {(cyberSecurityVideoError || (!isCyberSecurityHovered && !cyberSecurityTapped) || ((isCyberSecurityHovered || cyberSecurityTapped) && !cyberSecurityVideoReady)) && (
                   <Image
                     src={`${base}/images/fleet-cyber-security.jpg`}
                     alt="Ship Cyber security project thumbnail"
                     width={600}
                     height={400}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover z-10"
                   />
                 )}
-                {!cyberSecurityVideoError && (isCyberSecurityHovered || cyberSecurityTapped) && (
+                {!cyberSecurityVideoError && (
                   <video
                     ref={cyberSecurityVideoRef}
                     src={`${base}/videos/cybersecurity.mp4`}
                     preload="auto"
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${(isCyberSecurityHovered || cyberSecurityTapped) && cyberSecurityVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                     muted
                     loop
                     playsInline
                     aria-label="Ship Cyber security project preview"
+                    onCanPlay={() => setCyberSecurityVideoReady(true)}
                     onError={() => setCyberSecurityVideoError(true)}
                   />
                 )}
@@ -328,25 +333,26 @@ export default function Home() {
                   }
                 }}
               >
-                {(neuboatVideoError || (!isNeuboatHovered && !isNeuboatTapped)) && (
+                {(neuboatVideoError || (!isNeuboatHovered && !isNeuboatTapped) || ((isNeuboatHovered || isNeuboatTapped) && !neuboatVideoReady)) && (
                   <Image
                     src={`${base}/images/secure-network-management.jpg`}
                     alt="Neuboat project thumbnail"
                     width={600}
                     height={400}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover z-10"
                   />
                 )}
-                {!neuboatVideoError && (isNeuboatHovered || isNeuboatTapped) && (
+                {!neuboatVideoError && (
                   <video
                     ref={neuboatVideoRef}
                     src={`${base}/videos/neuboat.mp4?v=2`}
                     preload="auto"
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${(isNeuboatHovered || isNeuboatTapped) && neuboatVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                     muted
                     loop
                     playsInline
                     aria-label="Neuboat project preview"
+                    onCanPlay={() => setNeuboatVideoReady(true)}
                     onError={() => setNeuboatVideoError(true)}
                   />
                 )}
@@ -384,25 +390,26 @@ export default function Home() {
                   }
                 }}
               >
-                {(hinasCloudVideoError || (!isHinasCloudHovered && !hinasCloudTapped)) && (
+                {(hinasCloudVideoError || (!isHinasCloudHovered && !hinasCloudTapped) || ((isHinasCloudHovered || hinasCloudTapped) && !hinasCloudVideoReady)) && (
                   <Image
                     src={`${base}/images/secure-network-management-project.jpg`}
                     alt="HiNAS Cloud project thumbnail"
                     width={600}
                     height={400}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover z-10"
                   />
                 )}
-                {!hinasCloudVideoError && (isHinasCloudHovered || hinasCloudTapped) && (
+                {!hinasCloudVideoError && (
                   <video
                     ref={hinasCloudVideoRef}
                     src={`${base}/videos/cloud.mp4`}
                     preload="auto"
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${(isHinasCloudHovered || hinasCloudTapped) && hinasCloudVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                     muted
                     loop
                     playsInline
                     aria-label="HiNAS Cloud project preview"
+                    onCanPlay={() => setHinasCloudVideoReady(true)}
                     onError={() => setHinasCloudVideoError(true)}
                   />
                 )}
@@ -487,25 +494,26 @@ export default function Home() {
                   }
                 }}
               >
-                {(enerbuildVideoError || (!isEnerbuildHovered && !enerbuildTapped)) && (
+                {(enerbuildVideoError || (!isEnerbuildHovered && !enerbuildTapped) || ((isEnerbuildHovered || enerbuildTapped) && !enerbuildVideoReady)) && (
                   <Image
                     src={`${base}/images/project-six.png`}
                     alt="Enerbuild project thumbnail"
                     width={600}
                     height={400}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover z-10"
                   />
                 )}
-                {!enerbuildVideoError && (isEnerbuildHovered || enerbuildTapped) && (
+                {!enerbuildVideoError && (
                   <video
                     ref={enerbuildVideoRef}
                     src={`${base}/videos/enerbuild.mp4`}
                     preload="auto"
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${(isEnerbuildHovered || enerbuildTapped) && enerbuildVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                     muted
                     loop
                     playsInline
                     aria-label="Enerbuild project preview"
+                    onCanPlay={() => setEnerbuildVideoReady(true)}
                     onError={() => setEnerbuildVideoError(true)}
                   />
                 )}

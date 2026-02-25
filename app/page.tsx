@@ -556,14 +556,14 @@ export default function Home() {
                 href="https://www.figma.com/community/plugin/1585181547477168350"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
+                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[24px]"
               >
                 <Image
                   src={`${base}/images/font-to-mm.png`}
                   alt="Blog post thumbnail"
                   width={600}
                   height={400}
-                  className="blog-image h-full w-full object-cover"
+                  className="blog-image h-full w-full object-cover rounded-[24px]"
                 />
               </Link>
               <div>
@@ -590,14 +590,14 @@ export default function Home() {
                 href="https://medium.com/@ysa_32921/figma-to-google-slides-with-gpt-86e93de57f82"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
+                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[24px]"
               >
                 <Image
                   src={`${base}/images/figma-to-google-slide.png`}
                   alt="Blog post thumbnail"
                   width={600}
                   height={400}
-                  className="blog-image h-full w-full object-cover"
+                  className="blog-image h-full w-full object-cover rounded-[24px]"
                 />
               </Link>
               <div>
@@ -622,14 +622,14 @@ export default function Home() {
             <div className="border-border cursor-pointer group p-4 border-0 bg-transparent">
               <Link
                 href="#"
-                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
+                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[24px]"
               >
                 <Image
                   src={`${base}/images/translatetext.png`}
                   alt="Type and Translate - translation tool interface"
                   width={600}
                   height={400}
-                  className="blog-image h-full w-full object-cover"
+                  className="blog-image h-full w-full object-cover rounded-[24px]"
                 />
               </Link>
               <div>

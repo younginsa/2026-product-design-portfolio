@@ -39,6 +39,15 @@ export default function Home() {
   const [enerbuildVideoError, setEnerbuildVideoError] = useState(false)
   const enerbuildVideoRef = useRef<HTMLVideoElement>(null)
 
+  // Reels-style: which card is centered on mobile (only one plays)
+  type VideoCardId = "cyber" | "neuboat" | "hinas" | "enerbuild"
+  const [mobileCenteredCard, setMobileCenteredCard] = useState<VideoCardId | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+  const cyberCardRef = useRef<HTMLDivElement>(null)
+  const neuboatCardRef = useRef<HTMLDivElement>(null)
+  const hinasCardRef = useRef<HTMLDivElement>(null)
+  const enerbuildCardRef = useRef<HTMLDivElement>(null)
+
   // Animated words
   const words = ["workflow", "product", "design system"]
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
@@ -65,6 +74,55 @@ export default function Home() {
     setMounted(true)
   }, [])
 
+  // Mobile detection (md breakpoint: 768px)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)")
+    const handler = () => setIsMobile(mq.matches)
+    handler()
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+
+  // Reels-style: find which video card is closest to viewport center (mobile only)
+  useEffect(() => {
+    if (!isMobile) {
+      setMobileCenteredCard(null)
+      return
+    }
+    const cards: { id: VideoCardId; ref: React.RefObject<HTMLDivElement | null> }[] = [
+      { id: "cyber", ref: cyberCardRef },
+      { id: "neuboat", ref: neuboatCardRef },
+      { id: "hinas", ref: hinasCardRef },
+      { id: "enerbuild", ref: enerbuildCardRef },
+    ]
+    const viewportCenterY = () => window.innerHeight / 2
+    const updateCentered = () => {
+      let best: VideoCardId | null = null
+      let bestDist = Infinity
+      for (const { id, ref } of cards) {
+        const el = ref.current
+        if (!el) continue
+        const rect = el.getBoundingClientRect()
+        if (rect.bottom < 0 || rect.top > window.innerHeight) continue
+        const centerY = rect.top + rect.height / 2
+        const dist = Math.abs(centerY - viewportCenterY())
+        if (dist < bestDist) {
+          bestDist = dist
+          best = id
+        }
+      }
+      setMobileCenteredCard((prev) => (prev !== best ? best : prev))
+    }
+    updateCentered()
+    const onScroll = () => requestAnimationFrame(updateCentered)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
+    }
+  }, [isMobile])
+
   // Measure initial word width
   useEffect(() => {
     if (measureRef.current) {
@@ -73,49 +131,57 @@ export default function Home() {
     }
   }, [])
 
-  // Neuboat card: play only when video is ready (avoids gray flash)
+  // Neuboat card: play when hover/tap (desktop) or when centered (mobile Reels-style)
+  const neuboatShouldPlay =
+    isMobile ? mobileCenteredCard === "neuboat" : isNeuboatHovered || isNeuboatTapped
   useEffect(() => {
     const video = neuboatVideoRef.current
     if (!video || neuboatVideoError) return
-    if ((isNeuboatHovered || isNeuboatTapped) && neuboatVideoReady) video.play().catch(() => {})
+    if (neuboatShouldPlay && neuboatVideoReady) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isNeuboatHovered, isNeuboatTapped, neuboatVideoReady, neuboatVideoError])
+  }, [neuboatShouldPlay, neuboatVideoReady, neuboatVideoError])
 
   // Ship Cyber security card
+  const cyberShouldPlay =
+    isMobile ? mobileCenteredCard === "cyber" : isCyberSecurityHovered || cyberSecurityTapped
   useEffect(() => {
     const video = cyberSecurityVideoRef.current
     if (!video || cyberSecurityVideoError) return
-    if ((isCyberSecurityHovered || cyberSecurityTapped) && cyberSecurityVideoReady) video.play().catch(() => {})
+    if (cyberShouldPlay && cyberSecurityVideoReady) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isCyberSecurityHovered, cyberSecurityTapped, cyberSecurityVideoReady, cyberSecurityVideoError])
+  }, [cyberShouldPlay, cyberSecurityVideoReady, cyberSecurityVideoError])
 
   // HiNAS Cloud card
+  const hinasShouldPlay =
+    isMobile ? mobileCenteredCard === "hinas" : isHinasCloudHovered || hinasCloudTapped
   useEffect(() => {
     const video = hinasCloudVideoRef.current
     if (!video || hinasCloudVideoError) return
-    if ((isHinasCloudHovered || hinasCloudTapped) && hinasCloudVideoReady) video.play().catch(() => {})
+    if (hinasShouldPlay && hinasCloudVideoReady) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isHinasCloudHovered, hinasCloudTapped, hinasCloudVideoReady, hinasCloudVideoError])
+  }, [hinasShouldPlay, hinasCloudVideoReady, hinasCloudVideoError])
 
   // Enerbuild card
+  const enerbuildShouldPlay =
+    isMobile ? mobileCenteredCard === "enerbuild" : isEnerbuildHovered || enerbuildTapped
   useEffect(() => {
     const video = enerbuildVideoRef.current
     if (!video || enerbuildVideoError) return
-    if ((isEnerbuildHovered || enerbuildTapped) && enerbuildVideoReady) video.play().catch(() => {})
+    if (enerbuildShouldPlay && enerbuildVideoReady) video.play().catch(() => {})
     else {
       video.pause()
       video.currentTime = 0
     }
-  }, [isEnerbuildHovered, enerbuildTapped, enerbuildVideoReady, enerbuildVideoError])
+  }, [enerbuildShouldPlay, enerbuildVideoReady, enerbuildVideoError])
 
   // Pause all and reset (for tap-outside)
   const pauseAllProjectVideos = useCallback(() => {
@@ -343,22 +409,23 @@ export default function Home() {
               }}
             >
               <div
+                ref={cyberCardRef}
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
                 onClick={(e) => {
-                  if (!cyberSecurityVideoError) {
+                  if (!isMobile && !cyberSecurityVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
                     switchToCard("cyber")
                   }
                 }}
                 onTouchEnd={(e) => {
-                  if (!cyberSecurityVideoError) {
+                  if (!isMobile && !cyberSecurityVideoError) {
                     e.preventDefault()
                     switchToCard("cyber")
                   }
                 }}
               >
-                {(cyberSecurityVideoError || (!isCyberSecurityHovered && !cyberSecurityTapped) || ((isCyberSecurityHovered || cyberSecurityTapped) && !cyberSecurityVideoReady)) && (
+                {(cyberSecurityVideoError || !cyberShouldPlay || (cyberShouldPlay && !cyberSecurityVideoReady)) && (
                   <Image
                     src={`${base}/images/fleet-cyber-security.jpg`}
                     alt="Ship Cyber security project thumbnail"
@@ -372,7 +439,7 @@ export default function Home() {
                     ref={cyberSecurityVideoRef}
                     src={`${base}/videos/cybersecurity.mp4`}
                     preload="auto"
-                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${(isCyberSecurityHovered || cyberSecurityTapped) && cyberSecurityVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${cyberShouldPlay && cyberSecurityVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                     muted
                     loop
                     playsInline
@@ -406,22 +473,23 @@ export default function Home() {
               }}
             >
               <div
+                ref={neuboatCardRef}
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
                 onClick={(e) => {
-                  if (!neuboatVideoError) {
+                  if (!isMobile && !neuboatVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
                     switchToCard("neuboat")
                   }
                 }}
                 onTouchEnd={(e) => {
-                  if (!neuboatVideoError) {
+                  if (!isMobile && !neuboatVideoError) {
                     e.preventDefault()
                     switchToCard("neuboat")
                   }
                 }}
               >
-                {(neuboatVideoError || (!isNeuboatHovered && !isNeuboatTapped) || ((isNeuboatHovered || isNeuboatTapped) && !neuboatVideoReady)) && (
+                {(neuboatVideoError || !neuboatShouldPlay || (neuboatShouldPlay && !neuboatVideoReady)) && (
                   <Image
                     src={`${base}/images/secure-network-management.jpg`}
                     alt="Neuboat project thumbnail"
@@ -435,7 +503,7 @@ export default function Home() {
                     ref={neuboatVideoRef}
                     src={`${base}/videos/neuboat.mp4?v=2`}
                     preload="auto"
-                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${(isNeuboatHovered || isNeuboatTapped) && neuboatVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${neuboatShouldPlay && neuboatVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                     muted
                     loop
                     playsInline
@@ -469,22 +537,23 @@ export default function Home() {
               }}
             >
               <div
+                ref={hinasCardRef}
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
                 onClick={(e) => {
-                  if (!hinasCloudVideoError) {
+                  if (!isMobile && !hinasCloudVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
                     switchToCard("hinas")
                   }
                 }}
                 onTouchEnd={(e) => {
-                  if (!hinasCloudVideoError) {
+                  if (!isMobile && !hinasCloudVideoError) {
                     e.preventDefault()
                     switchToCard("hinas")
                   }
                 }}
               >
-                {(hinasCloudVideoError || (!isHinasCloudHovered && !hinasCloudTapped) || ((isHinasCloudHovered || hinasCloudTapped) && !hinasCloudVideoReady)) && (
+                {(hinasCloudVideoError || !hinasShouldPlay || (hinasShouldPlay && !hinasCloudVideoReady)) && (
                   <Image
                     src={`${base}/images/secure-network-management-project.jpg`}
                     alt="HiNAS Cloud project thumbnail"
@@ -498,7 +567,7 @@ export default function Home() {
                     ref={hinasCloudVideoRef}
                     src={`${base}/videos/cloud.mp4`}
                     preload="auto"
-                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${(isHinasCloudHovered || hinasCloudTapped) && hinasCloudVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${hinasShouldPlay && hinasCloudVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                     muted
                     loop
                     playsInline
@@ -579,22 +648,23 @@ export default function Home() {
               }}
             >
               <div
+                ref={enerbuildCardRef}
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
                 onClick={(e) => {
-                  if (!enerbuildVideoError) {
+                  if (!isMobile && !enerbuildVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
                     switchToCard("enerbuild")
                   }
                 }}
                 onTouchEnd={(e) => {
-                  if (!enerbuildVideoError) {
+                  if (!isMobile && !enerbuildVideoError) {
                     e.preventDefault()
                     switchToCard("enerbuild")
                   }
                 }}
               >
-                {(enerbuildVideoError || (!isEnerbuildHovered && !enerbuildTapped) || ((isEnerbuildHovered || enerbuildTapped) && !enerbuildVideoReady)) && (
+                {(enerbuildVideoError || !enerbuildShouldPlay || (enerbuildShouldPlay && !enerbuildVideoReady)) && (
                   <Image
                     src={`${base}/images/project-six.png`}
                     alt="Enerbuild project thumbnail"
@@ -608,7 +678,7 @@ export default function Home() {
                     ref={enerbuildVideoRef}
                     src={`${base}/videos/enerbuild.mp4`}
                     preload="auto"
-                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${(isEnerbuildHovered || enerbuildTapped) && enerbuildVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${enerbuildShouldPlay && enerbuildVideoReady ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                     muted
                     loop
                     playsInline

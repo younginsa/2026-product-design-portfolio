@@ -5,6 +5,7 @@ import Image from "next/image"
 import { ArrowUpRight, Play } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { ChatBubble } from "@/components/chat-bubble"
 import { useTheme } from "next-themes"
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
@@ -133,6 +134,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <ChatBubble />
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center py-4 backdrop-blur-lg border-b border-border bg-background/80 px-4 md:px-6 mx-auto justify-between lg:px-20">
         <ThemeToggle />
         <nav className="hidden md:flex items-center absolute left-1/2 transform -translate-x-1/2 space-x-12">
@@ -623,8 +625,8 @@ export default function Home() {
                 className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[16px]"
               >
                 <Image
-                  src={`${base}/images/design-system-template.png`}
-                  alt="Blog post thumbnail"
+                  src={`${base}/images/translatetext.png`}
+                  alt="Type and Translate - translation tool interface"
                   width={600}
                   height={400}
                   className="blog-image h-full w-full object-cover"

@@ -271,10 +271,18 @@ export default function Home() {
               <div
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
                 onClick={(e) => {
-                  if (!isCyberSecurityHovered && !cyberSecurityTapped && !cyberSecurityVideoError) {
+                  if (!cyberSecurityVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
                     setCyberSecurityTapped(true)
+                    cyberSecurityVideoRef.current?.play().catch(() => {})
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  if (!cyberSecurityVideoError) {
+                    e.preventDefault()
+                    setCyberSecurityTapped(true)
+                    cyberSecurityVideoRef.current?.play().catch(() => {})
                   }
                 }}
               >
@@ -328,10 +336,18 @@ export default function Home() {
               <div
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
                 onClick={(e) => {
-                  if (!isNeuboatHovered && !isNeuboatTapped && !neuboatVideoError) {
+                  if (!neuboatVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
                     setIsNeuboatTapped(true)
+                    neuboatVideoRef.current?.play().catch(() => {})
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  if (!neuboatVideoError) {
+                    e.preventDefault()
+                    setIsNeuboatTapped(true)
+                    neuboatVideoRef.current?.play().catch(() => {})
                   }
                 }}
               >
@@ -385,10 +401,18 @@ export default function Home() {
               <div
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
                 onClick={(e) => {
-                  if (!isHinasCloudHovered && !hinasCloudTapped && !hinasCloudVideoError) {
+                  if (!hinasCloudVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
                     setHinasCloudTapped(true)
+                    hinasCloudVideoRef.current?.play().catch(() => {})
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  if (!hinasCloudVideoError) {
+                    e.preventDefault()
+                    setHinasCloudTapped(true)
+                    hinasCloudVideoRef.current?.play().catch(() => {})
                   }
                 }}
               >
@@ -489,10 +513,18 @@ export default function Home() {
               <div
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
                 onClick={(e) => {
-                  if (!isEnerbuildHovered && !enerbuildTapped && !enerbuildVideoError) {
+                  if (!enerbuildVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
                     setEnerbuildTapped(true)
+                    enerbuildVideoRef.current?.play().catch(() => {})
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  if (!enerbuildVideoError) {
+                    e.preventDefault()
+                    setEnerbuildTapped(true)
+                    enerbuildVideoRef.current?.play().catch(() => {})
                   }
                 }}
               >

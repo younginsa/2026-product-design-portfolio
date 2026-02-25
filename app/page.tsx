@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRight, Play } from "lucide-react"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { ChatBubble } from "@/components/chat-bubble"
 import { useTheme } from "next-themes"
@@ -116,6 +116,42 @@ export default function Home() {
       video.currentTime = 0
     }
   }, [isEnerbuildHovered, enerbuildTapped, enerbuildVideoReady, enerbuildVideoError])
+
+  // Pause all project videos and reset tapped state (mobile: only one plays, stop on focus out)
+  const pauseAllProjectVideos = useCallback(() => {
+    ;[
+      cyberSecurityVideoRef,
+      neuboatVideoRef,
+      hinasCloudVideoRef,
+      enerbuildVideoRef,
+    ].forEach((ref) => {
+      const v = ref.current
+      if (v) {
+        v.pause()
+        v.currentTime = 0
+      }
+    })
+    setCyberSecurityTapped(false)
+    setIsNeuboatTapped(false)
+    setHinasCloudTapped(false)
+    setEnerbuildTapped(false)
+  }, [])
+
+  // Document listener: when user taps outside project cards, pause all (mobile)
+  useEffect(() => {
+    const handleOutsideTap = (e: TouchEvent | MouseEvent) => {
+      const target = e.target as Node
+      // Don't pause if tap was on a project card (card handler will manage)
+      if (document.getElementById("project")?.contains(target)) return
+      pauseAllProjectVideos()
+    }
+    document.addEventListener("touchend", handleOutsideTap, { passive: true })
+    document.addEventListener("click", handleOutsideTap)
+    return () => {
+      document.removeEventListener("touchend", handleOutsideTap)
+      document.removeEventListener("click", handleOutsideTap)
+    }
+  }, [pauseAllProjectVideos])
 
   // Cycle through words and update width
   useEffect(() => {
@@ -274,6 +310,7 @@ export default function Home() {
                   if (!cyberSecurityVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
+                    pauseAllProjectVideos()
                     setCyberSecurityTapped(true)
                     cyberSecurityVideoRef.current?.play().catch(() => {})
                   }
@@ -281,6 +318,7 @@ export default function Home() {
                 onTouchEnd={(e) => {
                   if (!cyberSecurityVideoError) {
                     e.preventDefault()
+                    pauseAllProjectVideos()
                     setCyberSecurityTapped(true)
                     cyberSecurityVideoRef.current?.play().catch(() => {})
                   }
@@ -339,6 +377,7 @@ export default function Home() {
                   if (!neuboatVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
+                    pauseAllProjectVideos()
                     setIsNeuboatTapped(true)
                     neuboatVideoRef.current?.play().catch(() => {})
                   }
@@ -346,6 +385,7 @@ export default function Home() {
                 onTouchEnd={(e) => {
                   if (!neuboatVideoError) {
                     e.preventDefault()
+                    pauseAllProjectVideos()
                     setIsNeuboatTapped(true)
                     neuboatVideoRef.current?.play().catch(() => {})
                   }
@@ -404,6 +444,7 @@ export default function Home() {
                   if (!hinasCloudVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
+                    pauseAllProjectVideos()
                     setHinasCloudTapped(true)
                     hinasCloudVideoRef.current?.play().catch(() => {})
                   }
@@ -411,6 +452,7 @@ export default function Home() {
                 onTouchEnd={(e) => {
                   if (!hinasCloudVideoError) {
                     e.preventDefault()
+                    pauseAllProjectVideos()
                     setHinasCloudTapped(true)
                     hinasCloudVideoRef.current?.play().catch(() => {})
                   }
@@ -516,6 +558,7 @@ export default function Home() {
                   if (!enerbuildVideoError) {
                     e.preventDefault()
                     e.stopPropagation()
+                    pauseAllProjectVideos()
                     setEnerbuildTapped(true)
                     enerbuildVideoRef.current?.play().catch(() => {})
                   }
@@ -523,6 +566,7 @@ export default function Home() {
                 onTouchEnd={(e) => {
                   if (!enerbuildVideoError) {
                     e.preventDefault()
+                    pauseAllProjectVideos()
                     setEnerbuildTapped(true)
                     enerbuildVideoRef.current?.play().catch(() => {})
                   }

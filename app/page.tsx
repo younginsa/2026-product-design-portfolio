@@ -42,6 +42,12 @@ export default function Home() {
   // Reels-style: which card is centered on mobile (only one plays)
   type VideoCardId = "cyber" | "neuboat" | "hinas" | "enerbuild"
   const [mobileCenteredCard, setMobileCenteredCard] = useState<VideoCardId | null>(null)
+  const [mobileAutoplayBlocked, setMobileAutoplayBlocked] = useState<Record<VideoCardId, boolean>>({
+    cyber: false,
+    neuboat: false,
+    hinas: false,
+    enerbuild: false,
+  })
   const [isMobile, setIsMobile] = useState(false)
   const cyberCardRef = useRef<HTMLDivElement>(null)
   const neuboatCardRef = useRef<HTMLDivElement>(null)
@@ -82,6 +88,33 @@ export default function Home() {
     mq.addEventListener("change", handler)
     return () => mq.removeEventListener("change", handler)
   }, [])
+
+  const setCardAutoplayBlocked = useCallback((card: VideoCardId, blocked: boolean) => {
+    setMobileAutoplayBlocked((prev) => (prev[card] === blocked ? prev : { ...prev, [card]: blocked }))
+  }, [])
+
+  const handleManualMobilePlay = useCallback(
+    (card: VideoCardId, e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      e.stopPropagation()
+      const ref =
+        card === "cyber"
+          ? cyberSecurityVideoRef
+          : card === "neuboat"
+            ? neuboatVideoRef
+            : card === "hinas"
+              ? hinasCloudVideoRef
+              : enerbuildVideoRef
+      const video = ref.current
+      if (!video) return
+      video.currentTime = 0
+      video
+        .play()
+        .then(() => setCardAutoplayBlocked(card, false))
+        .catch(() => setCardAutoplayBlocked(card, true))
+    },
+    [setCardAutoplayBlocked]
+  )
 
   // Reels-style: find which video card is closest to viewport center (mobile only)
   useEffect(() => {
@@ -137,12 +170,18 @@ export default function Home() {
   useEffect(() => {
     const video = neuboatVideoRef.current
     if (!video || neuboatVideoError) return
-    if (neuboatShouldPlay && neuboatVideoReady) video.play().catch(() => {})
-    else {
+    if (neuboatShouldPlay && neuboatVideoReady) {
+      video
+        .play()
+        .then(() => setCardAutoplayBlocked("neuboat", false))
+        .catch(() => {
+          if (isMobile) setCardAutoplayBlocked("neuboat", true)
+        })
+    } else {
       video.pause()
       video.currentTime = 0
     }
-  }, [neuboatShouldPlay, neuboatVideoReady, neuboatVideoError])
+  }, [neuboatShouldPlay, neuboatVideoReady, neuboatVideoError, isMobile, setCardAutoplayBlocked])
 
   // Ship Cyber security card
   const cyberShouldPlay =
@@ -150,12 +189,18 @@ export default function Home() {
   useEffect(() => {
     const video = cyberSecurityVideoRef.current
     if (!video || cyberSecurityVideoError) return
-    if (cyberShouldPlay && cyberSecurityVideoReady) video.play().catch(() => {})
-    else {
+    if (cyberShouldPlay && cyberSecurityVideoReady) {
+      video
+        .play()
+        .then(() => setCardAutoplayBlocked("cyber", false))
+        .catch(() => {
+          if (isMobile) setCardAutoplayBlocked("cyber", true)
+        })
+    } else {
       video.pause()
       video.currentTime = 0
     }
-  }, [cyberShouldPlay, cyberSecurityVideoReady, cyberSecurityVideoError])
+  }, [cyberShouldPlay, cyberSecurityVideoReady, cyberSecurityVideoError, isMobile, setCardAutoplayBlocked])
 
   // HiNAS Cloud card
   const hinasShouldPlay =
@@ -163,12 +208,18 @@ export default function Home() {
   useEffect(() => {
     const video = hinasCloudVideoRef.current
     if (!video || hinasCloudVideoError) return
-    if (hinasShouldPlay && hinasCloudVideoReady) video.play().catch(() => {})
-    else {
+    if (hinasShouldPlay && hinasCloudVideoReady) {
+      video
+        .play()
+        .then(() => setCardAutoplayBlocked("hinas", false))
+        .catch(() => {
+          if (isMobile) setCardAutoplayBlocked("hinas", true)
+        })
+    } else {
       video.pause()
       video.currentTime = 0
     }
-  }, [hinasShouldPlay, hinasCloudVideoReady, hinasCloudVideoError])
+  }, [hinasShouldPlay, hinasCloudVideoReady, hinasCloudVideoError, isMobile, setCardAutoplayBlocked])
 
   // Enerbuild card
   const enerbuildShouldPlay =
@@ -176,12 +227,18 @@ export default function Home() {
   useEffect(() => {
     const video = enerbuildVideoRef.current
     if (!video || enerbuildVideoError) return
-    if (enerbuildShouldPlay && enerbuildVideoReady) video.play().catch(() => {})
-    else {
+    if (enerbuildShouldPlay && enerbuildVideoReady) {
+      video
+        .play()
+        .then(() => setCardAutoplayBlocked("enerbuild", false))
+        .catch(() => {
+          if (isMobile) setCardAutoplayBlocked("enerbuild", true)
+        })
+    } else {
       video.pause()
       video.currentTime = 0
     }
-  }, [enerbuildShouldPlay, enerbuildVideoReady, enerbuildVideoError])
+  }, [enerbuildShouldPlay, enerbuildVideoReady, enerbuildVideoError, isMobile, setCardAutoplayBlocked])
 
   // Pause all and reset (for tap-outside)
   const pauseAllProjectVideos = useCallback(() => {
@@ -242,8 +299,9 @@ export default function Home() {
     []
   )
 
-  // When tapping outside project cards, pause all (mobile)
+  // Outside tap pause is desktop-only to avoid conflicting with mobile centered autoplay.
   useEffect(() => {
+    if (isMobile) return
     const handleOutsideTap = (e: TouchEvent | MouseEvent) => {
       const target = e.target as HTMLElement
       if (target.closest(".project-card")) return
@@ -255,7 +313,7 @@ export default function Home() {
       document.removeEventListener("touchend", handleOutsideTap)
       document.removeEventListener("click", handleOutsideTap)
     }
-  }, [pauseAllProjectVideos])
+  }, [isMobile, pauseAllProjectVideos])
 
   // Cycle through words and update width
   useEffect(() => {
@@ -448,6 +506,22 @@ export default function Home() {
                     onError={() => setCyberSecurityVideoError(true)}
                   />
                 )}
+                {isMobile &&
+                  mobileCenteredCard === "cyber" &&
+                  mobileAutoplayBlocked.cyber &&
+                  !cyberSecurityVideoError &&
+                  cyberSecurityVideoReady && (
+                    <button
+                      type="button"
+                      onClick={(e) => handleManualMobilePlay("cyber", e)}
+                      className="absolute inset-0 z-20 flex items-center justify-center bg-black/20"
+                      aria-label="Tap to play Ship Cyber security preview"
+                    >
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+                        <Play className="h-7 w-7 ml-1 fill-current" />
+                      </span>
+                    </button>
+                  )}
               </div>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
@@ -512,6 +586,22 @@ export default function Home() {
                     onError={() => setNeuboatVideoError(true)}
                   />
                 )}
+                {isMobile &&
+                  mobileCenteredCard === "neuboat" &&
+                  mobileAutoplayBlocked.neuboat &&
+                  !neuboatVideoError &&
+                  neuboatVideoReady && (
+                    <button
+                      type="button"
+                      onClick={(e) => handleManualMobilePlay("neuboat", e)}
+                      className="absolute inset-0 z-20 flex items-center justify-center bg-black/20"
+                      aria-label="Tap to play Neuboat preview"
+                    >
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+                        <Play className="h-7 w-7 ml-1 fill-current" />
+                      </span>
+                    </button>
+                  )}
               </div>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
@@ -576,6 +666,22 @@ export default function Home() {
                     onError={() => setHinasCloudVideoError(true)}
                   />
                 )}
+                {isMobile &&
+                  mobileCenteredCard === "hinas" &&
+                  mobileAutoplayBlocked.hinas &&
+                  !hinasCloudVideoError &&
+                  hinasCloudVideoReady && (
+                    <button
+                      type="button"
+                      onClick={(e) => handleManualMobilePlay("hinas", e)}
+                      className="absolute inset-0 z-20 flex items-center justify-center bg-black/20"
+                      aria-label="Tap to play HiNAS Cloud preview"
+                    >
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+                        <Play className="h-7 w-7 ml-1 fill-current" />
+                      </span>
+                    </button>
+                  )}
               </div>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
@@ -687,6 +793,22 @@ export default function Home() {
                     onError={() => setEnerbuildVideoError(true)}
                   />
                 )}
+                {isMobile &&
+                  mobileCenteredCard === "enerbuild" &&
+                  mobileAutoplayBlocked.enerbuild &&
+                  !enerbuildVideoError &&
+                  enerbuildVideoReady && (
+                    <button
+                      type="button"
+                      onClick={(e) => handleManualMobilePlay("enerbuild", e)}
+                      className="absolute inset-0 z-20 flex items-center justify-center bg-black/20"
+                      aria-label="Tap to play Enerbuild preview"
+                    >
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+                        <Play className="h-7 w-7 ml-1 fill-current" />
+                      </span>
+                    </button>
+                  )}
               </div>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">

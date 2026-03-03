@@ -116,7 +116,9 @@ export default function Home() {
     [setCardAutoplayBlocked]
   )
 
-  // Reels-style: find which video card is closest to viewport center (mobile only)
+  // Reels-style: find which video card is most centered (mobile only)
+  // Uses IntersectionObserver with a center-band rootMargin so the card with the
+  // highest visible fraction within the middle 40% of the viewport wins.
   useEffect(() => {
     if (!isMobile) {
       setMobileCenteredCard(null)
@@ -128,32 +130,42 @@ export default function Home() {
       { id: "hinas", ref: hinasCardRef },
       { id: "enerbuild", ref: enerbuildCardRef },
     ]
-    const viewportCenterY = () => window.innerHeight / 2
-    const updateCentered = () => {
-      let best: VideoCardId | null = null
-      let bestDist = Infinity
-      for (const { id, ref } of cards) {
-        const el = ref.current
-        if (!el) continue
-        const rect = el.getBoundingClientRect()
-        if (rect.bottom < 0 || rect.top > window.innerHeight) continue
-        const centerY = rect.top + rect.height / 2
-        const dist = Math.abs(centerY - viewportCenterY())
-        if (dist < bestDist) {
-          bestDist = dist
-          best = id
+    const ratios = new Map<VideoCardId, number>()
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const card = cards.find((c) => c.ref.current === entry.target)
+          if (!card) continue
+          if (entry.intersectionRatio > 0) {
+            ratios.set(card.id, entry.intersectionRatio)
+          } else {
+            ratios.delete(card.id)
+          }
         }
+        let best: VideoCardId | null = null
+        let bestRatio = 0
+        for (const [id, ratio] of ratios) {
+          if (ratio > bestRatio) {
+            bestRatio = ratio
+            best = id
+          }
+        }
+        setMobileCenteredCard((prev) => (prev !== best ? best : prev))
+      },
+      {
+        // Shrink the root by 30% top and bottom — only the middle 40% of the
+        // visual viewport counts as "centered". visualViewport percentages are
+        // not supported in rootMargin, but the browser applies the margin against
+        // the layout viewport; on mobile this still tracks the visible center
+        // reliably without needing window.innerHeight.
+        threshold: [0, 0.25, 0.5, 0.75, 1.0],
+        rootMargin: "-30% 0px -30% 0px",
       }
-      setMobileCenteredCard((prev) => (prev !== best ? best : prev))
+    )
+    for (const { ref } of cards) {
+      if (ref.current) observer.observe(ref.current)
     }
-    updateCentered()
-    const onScroll = () => requestAnimationFrame(updateCentered)
-    window.addEventListener("scroll", onScroll, { passive: true })
-    window.addEventListener("resize", onScroll)
-    return () => {
-      window.removeEventListener("scroll", onScroll)
-      window.removeEventListener("resize", onScroll)
-    }
+    return () => observer.disconnect()
   }, [isMobile])
 
   // Measure initial word width
@@ -170,13 +182,19 @@ export default function Home() {
   useEffect(() => {
     const video = neuboatVideoRef.current
     if (!video || neuboatVideoError) return
-    if (neuboatShouldPlay && neuboatVideoReady) {
-      video
-        .play()
-        .then(() => setCardAutoplayBlocked("neuboat", false))
-        .catch(() => {
-          if (isMobile) setCardAutoplayBlocked("neuboat", true)
-        })
+    if (neuboatShouldPlay) {
+      if (neuboatVideoReady) {
+        video
+          .play()
+          .then(() => setCardAutoplayBlocked("neuboat", false))
+          .catch(() => {
+            if (isMobile) setCardAutoplayBlocked("neuboat", true)
+          })
+      } else {
+        // Mobile ignores preload="auto" — trigger buffering explicitly.
+        // onCanPlay will fire once ready, re-running this effect to call play().
+        video.load()
+      }
     } else {
       video.pause()
       video.currentTime = 0
@@ -189,13 +207,17 @@ export default function Home() {
   useEffect(() => {
     const video = cyberSecurityVideoRef.current
     if (!video || cyberSecurityVideoError) return
-    if (cyberShouldPlay && cyberSecurityVideoReady) {
-      video
-        .play()
-        .then(() => setCardAutoplayBlocked("cyber", false))
-        .catch(() => {
-          if (isMobile) setCardAutoplayBlocked("cyber", true)
-        })
+    if (cyberShouldPlay) {
+      if (cyberSecurityVideoReady) {
+        video
+          .play()
+          .then(() => setCardAutoplayBlocked("cyber", false))
+          .catch(() => {
+            if (isMobile) setCardAutoplayBlocked("cyber", true)
+          })
+      } else {
+        video.load()
+      }
     } else {
       video.pause()
       video.currentTime = 0
@@ -208,13 +230,17 @@ export default function Home() {
   useEffect(() => {
     const video = hinasCloudVideoRef.current
     if (!video || hinasCloudVideoError) return
-    if (hinasShouldPlay && hinasCloudVideoReady) {
-      video
-        .play()
-        .then(() => setCardAutoplayBlocked("hinas", false))
-        .catch(() => {
-          if (isMobile) setCardAutoplayBlocked("hinas", true)
-        })
+    if (hinasShouldPlay) {
+      if (hinasCloudVideoReady) {
+        video
+          .play()
+          .then(() => setCardAutoplayBlocked("hinas", false))
+          .catch(() => {
+            if (isMobile) setCardAutoplayBlocked("hinas", true)
+          })
+      } else {
+        video.load()
+      }
     } else {
       video.pause()
       video.currentTime = 0
@@ -227,13 +253,17 @@ export default function Home() {
   useEffect(() => {
     const video = enerbuildVideoRef.current
     if (!video || enerbuildVideoError) return
-    if (enerbuildShouldPlay && enerbuildVideoReady) {
-      video
-        .play()
-        .then(() => setCardAutoplayBlocked("enerbuild", false))
-        .catch(() => {
-          if (isMobile) setCardAutoplayBlocked("enerbuild", true)
-        })
+    if (enerbuildShouldPlay) {
+      if (enerbuildVideoReady) {
+        video
+          .play()
+          .then(() => setCardAutoplayBlocked("enerbuild", false))
+          .catch(() => {
+            if (isMobile) setCardAutoplayBlocked("enerbuild", true)
+          })
+      } else {
+        video.load()
+      }
     } else {
       video.pause()
       video.currentTime = 0

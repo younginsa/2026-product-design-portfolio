@@ -484,6 +484,33 @@ export default function Home() {
         {/* Works Section - 6 projects in 2 columns */}
         <section id="project" className="py-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {/* Project Card 1 - AI Concierge */}
+            <Link
+              href="https://dribbble.com/shots/27362438-One-Conversation-Hello-to-Thank-You?utm_source=Clipboard_Shot&utm_campaign=youngsah&utm_content=One%20Conversation.%20Hello%20to%20Thank%20You.&utm_medium=Social_Share"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-card border-border cursor-pointer p-4 border-0 block"
+            >
+              <div className="aspect-[4/3] w-full overflow-hidden mb-6">
+                <Image
+                  src={`${base}/images/ai-concierge.png`}
+                  alt="AI Concierge project thumbnail"
+                  width={600}
+                  height={400}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
+                  <h3 className="text-base font-normal text-foreground">AI Concierge</h3>
+                  <p className="text-base text-input font-normal">Freelance</p>
+                </div>
+                <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
+                  TLDR; One conversation: Hello to Thank You.
+                </p>
+              </div>
+            </Link>
+
             {/* Project Card 1 - Link to external Dribbble URL in new tab */}
             <Link
               href="https://dribbble.com/shots/26504921-Fleet-Cyber-security"
@@ -735,33 +762,6 @@ export default function Home() {
                 </div>
               </Link>
             )}
-
-            {/* Project Card 5 - AI Concierge */}
-            <Link
-              href="https://dribbble.com/shots/27362438-One-Conversation-Hello-to-Thank-You?utm_source=Clipboard_Shot&utm_campaign=youngsah&utm_content=One%20Conversation.%20Hello%20to%20Thank%20You.&utm_medium=Social_Share"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-card border-border cursor-pointer p-4 border-0 block"
-            >
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6">
-                <Image
-                  src={`${base}/images/ai-concierge.png`}
-                  alt="AI Concierge project thumbnail"
-                  width={600}
-                  height={400}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
-                  <h3 className="text-base font-normal text-foreground">AI Concierge</h3>
-                  <p className="text-base text-input font-normal">Freelance</p>
-                </div>
-                <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
-                  TLDR; One conversation: Hello to Thank You.
-                </p>
-              </div>
-            </Link>
 
             {/* Project Card 6 */}
             <Link

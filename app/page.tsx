@@ -499,19 +499,6 @@ export default function Home() {
               <div
                 ref={cyberCardRef}
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
-                onClick={(e) => {
-                  if (!isMobile && !cyberSecurityVideoError) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    switchToCard("cyber")
-                  }
-                }}
-                onTouchEnd={(e) => {
-                  if (!isMobile && !cyberSecurityVideoError) {
-                    e.preventDefault()
-                    switchToCard("cyber")
-                  }
-                }}
               >
                 {(cyberSecurityVideoError || !cyberShouldPlay || (cyberShouldPlay && !cyberSecurityVideoReady)) && (
                   <Image
@@ -579,19 +566,6 @@ export default function Home() {
               <div
                 ref={neuboatCardRef}
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
-                onClick={(e) => {
-                  if (!isMobile && !neuboatVideoError) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    switchToCard("neuboat")
-                  }
-                }}
-                onTouchEnd={(e) => {
-                  if (!isMobile && !neuboatVideoError) {
-                    e.preventDefault()
-                    switchToCard("neuboat")
-                  }
-                }}
               >
                 {(neuboatVideoError || !neuboatShouldPlay || (neuboatShouldPlay && !neuboatVideoReady)) && (
                   <Image
@@ -659,19 +633,6 @@ export default function Home() {
               <div
                 ref={hinasCardRef}
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
-                onClick={(e) => {
-                  if (!isMobile && !hinasCloudVideoError) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    switchToCard("hinas")
-                  }
-                }}
-                onTouchEnd={(e) => {
-                  if (!isMobile && !hinasCloudVideoError) {
-                    e.preventDefault()
-                    switchToCard("hinas")
-                  }
-                }}
               >
                 {(hinasCloudVideoError || !hinasShouldPlay || (hinasShouldPlay && !hinasCloudVideoReady)) && (
                   <Image
@@ -751,12 +712,41 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* Project Card 5 */}
-            <Link href="/project/geared-ai" className="project-card border-border cursor-pointer p-4 border-0 block">
+            {/* Project Card 5 - Geared.ai (HIDDEN). To restore: change `false` to `true` below. */}
+            {false && (
+              <Link href="/project/geared-ai" className="project-card border-border cursor-pointer p-4 border-0 block">
+                <div className="aspect-[4/3] w-full overflow-hidden mb-6">
+                  <Image
+                    src={`${base}/images/geared-ai.png`}
+                    alt="Project thumbnail"
+                    width={600}
+                    height={400}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div>
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
+                    <h3 className="text-base font-normal text-foreground">Geared.ai</h3>
+                    <p className="text-base text-input font-normal">Freelance</p>
+                  </div>
+                  <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
+                    TLDR; AI-powered platform for enhancing workflow.
+                  </p>
+                </div>
+              </Link>
+            )}
+
+            {/* Project Card 5 - AI Concierge */}
+            <Link
+              href="https://dribbble.com/shots/27362438-One-Conversation-Hello-to-Thank-You?utm_source=Clipboard_Shot&utm_campaign=youngsah&utm_content=One%20Conversation.%20Hello%20to%20Thank%20You.&utm_medium=Social_Share"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-card border-border cursor-pointer p-4 border-0 block"
+            >
               <div className="aspect-[4/3] w-full overflow-hidden mb-6">
                 <Image
-                  src={`${base}/images/geared-ai.png`}
-                  alt="Project thumbnail"
+                  src={`${base}/images/ai-concierge.png`}
+                  alt="AI Concierge project thumbnail"
                   width={600}
                   height={400}
                   className="h-full w-full object-cover"
@@ -764,11 +754,11 @@ export default function Home() {
               </div>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
-                  <h3 className="text-base font-normal text-foreground">Geared.ai</h3>
+                  <h3 className="text-base font-normal text-foreground">AI Concierge</h3>
                   <p className="text-base text-input font-normal">Freelance</p>
                 </div>
                 <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
-                  TLDR; AI-powered platform for enhancing workflow.
+                  TLDR; One conversation: Hello to Thank You.
                 </p>
               </div>
             </Link>
@@ -786,19 +776,6 @@ export default function Home() {
               <div
                 ref={enerbuildCardRef}
                 className="aspect-[4/3] w-full overflow-hidden mb-6 relative bg-muted"
-                onClick={(e) => {
-                  if (!isMobile && !enerbuildVideoError) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    switchToCard("enerbuild")
-                  }
-                }}
-                onTouchEnd={(e) => {
-                  if (!isMobile && !enerbuildVideoError) {
-                    e.preventDefault()
-                    switchToCard("enerbuild")
-                  }
-                }}
               >
                 {(enerbuildVideoError || !enerbuildShouldPlay || (enerbuildShouldPlay && !enerbuildVideoReady)) && (
                   <Image

@@ -27,7 +27,7 @@ export const projects: Project[] = [
     thumbnail: "/images/fleet-cyber-security.jpg",
     heroImage: "/images/fleet-cyber-security.jpg",
     mainImage1: "/cyber-security-dashboard.png",
-    mainImage2: "/threat-monitoring-interface.jpg",
+    mainImage2: "/placeholder.svg",
     summary: {
       role: "Lead Product Designer",
       timeline: "2024",
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     thumbnail: "/images/secure-network-management.jpg",
     heroImage: "/images/secure-network-management.jpg",
     mainImage1: "/boat-navigation-app.jpg",
-    mainImage2: "/marine-control-interface.jpg",
+    mainImage2: "/placeholder.svg",
     summary: {
       role: "Product Designer",
       timeline: "2023-2024",
@@ -80,8 +80,8 @@ export const projects: Project[] = [
       "A 360-degree surround view monitoring system providing complete situational awareness for ship captains and crew.",
     thumbnail: "/images/project-five.png",
     heroImage: "/images/project-five.png",
-    mainImage1: "/surround-view-monitoring.jpg",
-    mainImage2: "/ship-camera-system.jpg",
+    mainImage1: "/placeholder.svg",
+    mainImage2: "/placeholder.svg",
     summary: {
       role: "Product Designer",
       timeline: "2024",

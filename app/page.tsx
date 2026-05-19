@@ -503,7 +503,7 @@ export default function Home() {
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
                   <h3 className="text-base font-normal text-foreground">AI Concierge</h3>
-                  <p className="text-base text-input font-normal">Freelance</p>
+                  <p className="text-base text-input font-normal">AI project</p>
                 </div>
                 <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
                   TLDR; One conversation: Hello to Thank You.
@@ -530,7 +530,7 @@ export default function Home() {
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
                   <h3 className="text-base font-normal text-foreground">Prism</h3>
-                  <p className="text-base text-input font-normal">Freelance</p>
+                  <p className="text-base text-input font-normal">AI project</p>
                 </div>
                 <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
                   TLDR; CS Console — Where customer support becomes product signal.

@@ -739,55 +739,6 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* Project Card 4 - Second Row */}
-            <Link
-              href="https://dribbble.com/shots/26789403-Surround-view-system-for-ships?utm_source=Clipboard_Shot&utm_campaign=youngsah&utm_content=Surround%20view%20system%20for%20ships&utm_medium=Social_Share"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-card border-border cursor-pointer p-4 border-0 block"
-            >
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6">
-                <Image
-                  src={`${base}/images/project-five.png`}
-                  alt="Project thumbnail"
-                  width={600}
-                  height={400}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
-                  <h3 className="text-base font-normal text-foreground">{"360° SVM"} </h3>
-                  <p className="text-base text-input font-normal">Avikus</p>
-                </div>
-                <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
-                  TLDR; Ship Surround View Monitoring system.
-                </p>
-              </div>
-            </Link>
-
-            {/* Project Card 5 - Geared.ai */}
-            <Link href="/project/geared-ai" className="project-card border-border cursor-pointer p-4 border-0 block">
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6">
-                <Image
-                  src={`${base}/images/geared-ai.png`}
-                  alt="Project thumbnail"
-                  width={600}
-                  height={400}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
-                  <h3 className="text-base font-normal text-foreground">Geared.ai</h3>
-                  <p className="text-base text-input font-normal">Freelance</p>
-                </div>
-                <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
-                  TLDR; AI-powered platform for enhancing workflow.
-                </p>
-              </div>
-            </Link>
-
             {/* Project Card 6 */}
             <Link
               href="/project/energino"

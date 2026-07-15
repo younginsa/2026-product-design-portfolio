@@ -484,17 +484,17 @@ export default function Home() {
         {/* Works Section - 6 projects in 2 columns */}
         <section id="project" className="py-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {/* Project Card 1 - AI Concierge */}
+            {/* Project Card 1 - Polygon-picker */}
             <Link
-              href="https://dribbble.com/shots/27362438-One-Conversation-Hello-to-Thank-You?utm_source=Clipboard_Shot&utm_campaign=youngsah&utm_content=One%20Conversation.%20Hello%20to%20Thank%20You.&utm_medium=Social_Share"
+              href="https://polygon-picker.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="project-card border-border cursor-pointer p-4 border-0 block"
             >
               <div className="aspect-[4/3] w-full overflow-hidden mb-6">
                 <Image
-                  src={`${base}/images/ai-concierge.png`}
-                  alt="AI Concierge project thumbnail"
+                  src={`${base}/images/polygon-picker.png`}
+                  alt="Polygon-picker project thumbnail"
                   width={600}
                   height={400}
                   className="h-full w-full object-cover"
@@ -502,11 +502,11 @@ export default function Home() {
               </div>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
-                  <h3 className="text-base font-normal text-foreground">AI Concierge</h3>
+                  <h3 className="text-base font-normal text-foreground">Polygon-picker</h3>
                   <p className="text-base text-input font-normal">AI project</p>
                 </div>
                 <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
-                  TLDR; One conversation: Hello to Thank You.
+                  TLDR; Trace floor plans into interactive room polygons.
                 </p>
               </div>
             </Link>
@@ -533,7 +533,7 @@ export default function Home() {
                   <p className="text-base text-input font-normal">AI project</p>
                 </div>
                 <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
-                  TLDR; CS Console — Where customer support becomes product signal.
+                  TLDR; Where customer support becomes product signal.
                 </p>
               </div>
             </Link>
@@ -826,6 +826,40 @@ export default function Home() {
             {/* Blog Card 1 */}
             <div className="border-border cursor-pointer group p-4 border-0 bg-transparent">
               <Link
+                href="https://apps.apple.com/us/app/googit/id6779139274"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[24px]"
+              >
+                <Image
+                  src={`${base}/images/googit.png`}
+                  alt="Blog post thumbnail"
+                  width={600}
+                  height={400}
+                  className="blog-image h-full w-full object-cover rounded-[24px]"
+                />
+              </Link>
+              <div>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-0">
+                  <h3 className="text-base leading-7 font-normal text-foreground">Googit</h3>
+                  <div className="flex items-center gap-1">
+                    <Link
+                      href="https://apps.apple.com/us/app/googit/id6779139274"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="nav-link text-muted-foreground hover:text-foreground transition-colors text-base"
+                    >
+                      App Store
+                    </Link>
+                    <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Blog Card 2 */}
+            <div className="border-border cursor-pointer group p-4 border-0 bg-transparent">
+              <Link
                 href="https://www.figma.com/community/plugin/1585181547477168350"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -841,7 +875,7 @@ export default function Home() {
               </Link>
               <div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-0">
-                  <h3 className="text-base leading-7 font-normal text-foreground"> Measure text </h3>
+                  <h3 className="text-base leading-7 font-normal text-foreground"> Font ISO, WCAG checker</h3>
                   <div className="flex items-center gap-1">
                     <Link
                       href="https://www.figma.com/community/plugin/1585181547477168350"
@@ -850,40 +884,6 @@ export default function Home() {
                       className="nav-link text-muted-foreground hover:text-foreground transition-colors text-base font-normal"
                     >
                       Figma
-                    </Link>
-                    <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Blog Card 2 */}
-            <div className="border-border cursor-pointer group p-4 border-0 bg-transparent">
-              <Link
-                href="https://medium.com/@ysa_32921/figma-to-google-slides-with-gpt-86e93de57f82"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block aspect-[4/3] w-full overflow-hidden mb-6 rounded-[24px]"
-              >
-                <Image
-                  src={`${base}/images/figma-to-google-slide.png`}
-                  alt="Blog post thumbnail"
-                  width={600}
-                  height={400}
-                  className="blog-image h-full w-full object-cover rounded-[24px]"
-                />
-              </Link>
-              <div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-0">
-                  <h3 className="text-base leading-7 font-normal text-foreground">Figma to Google Slide</h3>
-                  <div className="flex items-center gap-1">
-                    <Link
-                      href="https://medium.com/@ysa_32921/figma-to-google-slides-with-gpt-86e93de57f82"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="nav-link text-muted-foreground hover:text-foreground transition-colors text-base"
-                    >
-                      Medium
                     </Link>
                     <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
                   </div>

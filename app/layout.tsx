@@ -23,6 +23,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={manrope.variable}>
+      <head>
+        <script
+          defer
+          src="https://umami-theta-woad.vercel.app/script.js"
+          data-website-id="f26a607a-1766-49ce-b7fe-7f9587012e17"
+        />
+      </head>
       <body className="font-sans">
         <ThemeProvider
           attribute="class"

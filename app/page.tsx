@@ -484,60 +484,6 @@ export default function Home() {
         {/* Works Section - 6 projects in 2 columns */}
         <section id="project" className="py-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {/* Project Card 1 - Polygon-picker */}
-            <Link
-              href="https://polygon-picker.vercel.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-card border-border cursor-pointer p-4 border-0 block"
-            >
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6">
-                <Image
-                  src={`${base}/images/polygon-picker.png`}
-                  alt="Polygon-picker project thumbnail"
-                  width={600}
-                  height={400}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
-                  <h3 className="text-base font-normal text-foreground">Polygon-picker</h3>
-                  <p className="text-base text-input font-normal">AI project</p>
-                </div>
-                <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
-                  TLDR; Trace floor plans into interactive room polygons.
-                </p>
-              </div>
-            </Link>
-
-            {/* Project Card 2 - Prism */}
-            <Link
-              href="https://dribbble.com/shots/27362776-Prism-CS-Console-Where-customer-support-becomes-product-sign?utm_source=Clipboard_Shot&utm_campaign=youngsah&utm_content=Prism%20%E2%80%94%20CS%20Console%0AWhere%20customer%20support%20becomes%20product%20sign&utm_medium=Social_Share"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-card border-border cursor-pointer p-4 border-0 block"
-            >
-              <div className="aspect-[4/3] w-full overflow-hidden mb-6">
-                <Image
-                  src={`${base}/images/prism.png`}
-                  alt="Prism project thumbnail"
-                  width={600}
-                  height={400}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
-                  <h3 className="text-base font-normal text-foreground">Prism</h3>
-                  <p className="text-base text-input font-normal">AI project</p>
-                </div>
-                <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
-                  TLDR; Where customer support becomes product signal.
-                </p>
-              </div>
-            </Link>
-
             {/* Project Card 1 - Link to external Dribbble URL in new tab */}
             <Link
               href="https://dribbble.com/shots/26504921-Fleet-Cyber-security"
@@ -668,6 +614,60 @@ export default function Home() {
                 </div>
                 <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
                   TLDR; Boat control &amp; navigation iOS app
+                </p>
+              </div>
+            </Link>
+
+            {/* Project Card 1 - Polygon-picker */}
+            <Link
+              href="https://polygon-picker.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-card border-border cursor-pointer p-4 border-0 block"
+            >
+              <div className="aspect-[4/3] w-full overflow-hidden mb-6">
+                <Image
+                  src={`${base}/images/polygon-picker.png`}
+                  alt="Polygon-picker project thumbnail"
+                  width={600}
+                  height={400}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
+                  <h3 className="text-base font-normal text-foreground">Polygon-picker</h3>
+                  <p className="text-base text-input font-normal">AI project</p>
+                </div>
+                <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
+                  TLDR; Trace floor plans into interactive room polygons.
+                </p>
+              </div>
+            </Link>
+
+            {/* Project Card 2 - Prism */}
+            <Link
+              href="https://dribbble.com/shots/27362776-Prism-CS-Console-Where-customer-support-becomes-product-sign?utm_source=Clipboard_Shot&utm_campaign=youngsah&utm_content=Prism%20%E2%80%94%20CS%20Console%0AWhere%20customer%20support%20becomes%20product%20sign&utm_medium=Social_Share"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-card border-border cursor-pointer p-4 border-0 block"
+            >
+              <div className="aspect-[4/3] w-full overflow-hidden mb-6">
+                <Image
+                  src={`${base}/images/prism.png`}
+                  alt="Prism project thumbnail"
+                  width={600}
+                  height={400}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1 md:gap-0">
+                  <h3 className="text-base font-normal text-foreground">Prism</h3>
+                  <p className="text-base text-input font-normal">AI project</p>
+                </div>
+                <p className="hidden md:block text-sm text-input font-normal max-w-[80%]">
+                  TLDR; Where customer support becomes product signal.
                 </p>
               </div>
             </Link>
